@@ -12,7 +12,9 @@ name: keep
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    # Off the quarter-hour marks: GitHub delays, and under load drops, scheduled
+    # runs at the busy minutes (:00 above all), and */15 hits every one of them.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
 
 permissions:
