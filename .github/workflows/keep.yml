@@ -4,10 +4,10 @@
 #
 # It runs on a self-hosted runner on a Macula lab machine, in a runner group
 # that serves only this repository: macula stations are IPv6-only and
-# GitHub-hosted runners have no IPv6. Its container runs under the runner's
-# CPU and memory ceiling. It is triggered only by the schedule or by hand, never by a pull
-# request, so no fork can run code on that box. Its only credential is the
-# job's own GITHUB_TOKEN, allowed to write this repository's contents.
+# GitHub-hosted runners have no IPv6. It is triggered only by the schedule or
+# by hand, never by a pull request, so no fork can run code on that box. Its
+# only credential is the job's own GITHUB_TOKEN, allowed to write this
+# repository's contents.
 name: keep
 
 on:
@@ -25,34 +25,38 @@ concurrency:
 jobs:
   keep:
     runs-on: [self-hosted, fovea-keeper]
-    container:
-      image: docker.io/library/golang:1.27.0@sha256:4013ae0f9e7994f8535c58c811f8f863fbed38b72e0d51e6592156f758d66146
     timeout-minutes: 12
     env:
       FOVEA_VERSION: v0.2.0
-      MACULA_GO: v0.20.0
+      # The Go image, pinned by digest.
+      IMAGE: docker.io/library/golang:1.27.0@sha256:4013ae0f9e7994f8535c58c811f8f863fbed38b72e0d51e6592156f758d66146
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: the released verifier and the keeper
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          go install "github.com/macula-io/macula-fovea/cli/cmd/fovea@$FOVEA_VERSION"
-          "$(go env GOPATH)/bin/fovea" --version
-          (cd keeper && go build -o /usr/local/bin/keeper .)
-
-      - name: the assessments, whose revisions the records name
-        run: git clone --quiet https://github.com/macula-io/mcl-fovea-assessments.git /tmp/assessments
-
+      # Everything that touches the mesh or parses what it returns runs in a
+      # container on the podman network fovea-keeper: it has an IPv6 route to
+      # the stations (which are IPv6-only) and reaches none of the machine's
+      # localhost-only services. The runner's docker shim puts the container
+      # under the runner's CPU and memory ceiling.
       - name: fetch, verify and keep
-        run: keeper -config keeper.json -root . -fovea "$(go env GOPATH)/bin/fovea" -assessments /tmp/assessments
+        run: |
+          mkdir -p records endorsements
+          docker run --rm --network fovea-keeper \
+            -v "$GITHUB_WORKSPACE:/w" -v fovea-keeper-go:/go/pkg/mod -w /w \
+            -e FOVEA_VERSION "$IMAGE" sh -ec '
+              go install "github.com/macula-io/macula-fovea/cli/cmd/fovea@$FOVEA_VERSION"
+              fovea --version
+              (cd keeper && go build -o /usr/local/bin/keeper .)
+              git clone --quiet https://github.com/macula-io/mcl-fovea-assessments.git /tmp/assessments
+              keeper -config keeper.json -root . -fovea "$(go env GOPATH)/bin/fovea" -assessments /tmp/assessments'
 
       - name: commit what was kept
         if: always()
         run: |
           git config user.name "fovea keeper"
           git config user.email "fovea-keeper@users.noreply.github.com"
-          git add records endorsements
+          mkdir -p records endorsements
+          git add -- records endorsements
           git diff --cached --quiet && exit 0
           git commit --quiet -m "keep: $(date -u +%Y-%m-%dT%H:%MZ)"
           for attempt in 1 2 3; do
