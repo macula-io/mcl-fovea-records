@@ -1,0 +1,12 @@
+# Every 15 minutes, off the quarter-hour marks. Persistent: a run missed while
+# the machine was down runs at boot.
+[Unit]
+Description=fovea keeper, every 15 minutes
+
+[Timer]
+OnCalendar=*-*-* *:07,22,37,52:00
+Persistent=true
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

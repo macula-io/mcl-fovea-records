@@ -1,20 +1,15 @@
-# The keeper: every 15 minutes, fetch each slot of fovea's signed observations
-# from a macula station, keep every new record that the released `fovea verify`
-# accepts, log every fetch, write each slot's chain verdict, and commit.
-#
-# It runs on a self-hosted runner on a Macula lab machine, in a runner group
-# that serves only this repository: macula stations are IPv6-only and
-# GitHub-hosted runners have no IPv6. It is triggered only by the schedule or
-# by hand, never by a pull request, so no fork can run code on that box. Its
-# only credential is the job's own GITHUB_TOKEN, allowed to write this
-# repository's contents.
+# The keeper, by hand: the same run as the timer (keeper/keep.sh), on a
+# self-hosted runner on a Macula lab machine in a runner group that serves
+# only this repository (macula stations are IPv6-only and GitHub-hosted runners
+# have no IPv6). The every-15-minutes run is a user timer on that machine
+# (keeper/systemd/), because GitHub never fired this workflow's schedule;
+# having one scheduler means two keepers never race on the same commits.
+# Triggered only by hand, never by a pull request, so no fork can run code on
+# that box. Its only credential is the job's own GITHUB_TOKEN, allowed to
+# write this repository's contents.
 name: keep
 
 on:
-  schedule:
-    # Off the quarter-hour marks: GitHub delays, and under load drops, scheduled
-    # runs at the busy minutes (:00 above all), and */15 hits every one of them.
-    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -28,41 +23,9 @@ jobs:
   keep:
     runs-on: [self-hosted, fovea-keeper]
     timeout-minutes: 12
-    env:
-      FOVEA_VERSION: v0.2.0
-      # The Go image, pinned by digest.
-      IMAGE: docker.io/library/golang:1.27.0@sha256:4013ae0f9e7994f8535c58c811f8f863fbed38b72e0d51e6592156f758d66146
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      # Everything that touches the mesh or parses what it returns runs in a
-      # container on the podman network fovea-keeper: it has an IPv6 route to
-      # the stations (which are IPv6-only) and reaches none of the machine's
-      # localhost-only services. The runner's docker shim puts the container
-      # under the runner's CPU and memory ceiling.
-      - name: fetch, verify and keep
-        run: |
-          mkdir -p records endorsements
-          docker run --rm --network fovea-keeper \
-            -v "$GITHUB_WORKSPACE:/w" -v fovea-keeper-go:/go/pkg/mod -w /w \
-            -e FOVEA_VERSION "$IMAGE" sh -ec '
-              go install "github.com/macula-io/macula-fovea/cli/cmd/fovea@$FOVEA_VERSION"
-              fovea --version
-              (cd keeper && go build -o /usr/local/bin/keeper .)
-              git clone --quiet https://github.com/macula-io/mcl-fovea-assessments.git /tmp/assessments
-              keeper -config keeper.json -root . -fovea "$(go env GOPATH)/bin/fovea" -assessments /tmp/assessments'
-
-      - name: commit what was kept
-        if: always()
-        run: |
-          git config user.name "fovea keeper"
-          git config user.email "fovea-keeper@users.noreply.github.com"
-          mkdir -p records endorsements
-          git add -- records endorsements
-          git diff --cached --quiet && exit 0
-          git commit --quiet -m "keep: $(date -u +%Y-%m-%dT%H:%MZ)"
-          for attempt in 1 2 3; do
-            git push --quiet && exit 0
-            git pull --quiet --rebase
-          done
-          exit 1
+      # The runner's docker shim puts the container under the runner's CPU
+      # and memory ceiling.
+      - name: keep
+        run: RUNTIME=docker keeper/keep.sh

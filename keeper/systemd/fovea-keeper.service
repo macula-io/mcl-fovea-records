@@ -1,0 +1,21 @@
+# The keeper's timer service, a user unit on the machine that runs the keeper.
+# It pulls this repository, then runs keeper/keep.sh from it. A failed run
+# fails the unit, so `systemctl --user --failed` and the journal show it.
+[Unit]
+Description=fovea keeper: keep fovea's signed observations (mcl-fovea-records)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/fovea-keeper/mcl-fovea-records
+# The deploy key writes only this repository; GitHub's host key is pinned.
+Environment=GIT_SSH_COMMAND=ssh -i %h/.ssh/fovea_keeper_deploy -o IdentitiesOnly=yes -o UserKnownHostsFile=%h/fovea-keeper/known_hosts -o StrictHostKeyChecking=yes
+Environment=RUNTIME=podman
+ExecStartPre=/usr/bin/git pull --quiet --ff-only
+ExecStart=%h/fovea-keeper/mcl-fovea-records/keeper/keep.sh
+# The machine's own drop-in puts the unit, and through CGROUP_PARENT its
+# container, under that machine's shared CPU and memory ceiling.
+CPUQuota=200%
+MemoryMax=4G
+TimeoutStartSec=12min
