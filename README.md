@@ -13,6 +13,7 @@ A public archive of the signed observations that [mcl-fovea](https://github.com/
 | `records/<slot>/chain.txt` | The latest `fovea verify --chain` verdict over the slot's records. |
 | `records/<slot>/refused/`, `records/<slot>/other/` | Records `fovea verify` refused, and objects of another type found in the slot (a tombstone), kept apart from the chain. |
 | `endorsements/<observer node id>/` | Every realm member endorsement of the observer the keeper has seen; a record is checked against the one that covered it. |
+| `keeper.json` | The keeping policy: the realm, profile and realm key file, the stations the keeper asks, and the slots it keeps with the assessment each is verified against. [The keeper](https://github.com/macula-io/mcl-fovea-keeper) reads it from here on every run, and the `fovea verify` flags for any slot come from it. Changed only by a reviewed commit. |
 | `realm/io.macula.pub.hex` | The io.macula realm's public key, the trust anchor, as published at `https://realm.macula.io/.well-known/macula-realm.json` (SHA-256 of the hex text: `99e4f08c1aa30405c1eb1e0e81649b2686f3964fae8ffe827f8107bc7777b78d`). |
 
 ## Check it yourself
@@ -39,4 +40,4 @@ fovea verify --realm-key realm/io.macula.pub.hex --realm io.macula --profile pq_
 
 ## The keeper's machine
 
-This repository holds data only: nothing in it is ever executed. The keeper is a signed image from [mcl-fovea-keeper](https://github.com/macula-io/mcl-fovea-keeper), which the machine runs by digest as an unprivileged user, under a CPU and memory ceiling, on its own podman network: an IPv6 route to the stations, and none to the machine's own localhost-only services. It pushes with a deploy key that can write only this repository; that key was generated on the machine and never leaves it. A failed run fails the unit and is logged.
+This repository holds data and the keeping policy (`keeper.json`), nothing that is ever executed. The keeper is a signed image from [mcl-fovea-keeper](https://github.com/macula-io/mcl-fovea-keeper), which the machine runs by digest as an unprivileged user, under a CPU and memory ceiling, on its own podman network: an IPv6 route to the stations, and none to the machine's own localhost-only services. It pushes with a deploy key that can write only this repository; that key was generated on the machine and never leaves it. A failed run fails the unit and is logged.
