@@ -7,6 +7,11 @@
     {"host": "station-fr-paris.macula.io", "port": 4433, "node": "0063acc4a5af409ca6b15041975128d389222c48366fb3a1dfb948da01f7ca94"}
   ],
   "slots": [
-    {"storage_key": "cd256e6f6528cb46381ed5cfde72ca396de902f3680bcfaf9c19251f1b11ae0a", "assessment_path": "macula-station-kx"}
+    {"storage_key": "cd256e6f6528cb46381ed5cfde72ca396de902f3680bcfaf9c19251f1b11ae0a", "assessment_path": "macula-station-kx"},
+    {"storage_key": "69f3eba1b1a19d42072e37cbca28462f1177b375012a5047377657ada89f846f", "assessment_path": "macula-station-kx"},
+    {"storage_key": "6787ad3f4ffa398eba874b76ad9ceffcc3f6a18a6b6f78558b50f85d3fa3136d", "assessment_path": "macula-station-kx"},
+    {"storage_key": "c162c748e2e4006f8066e01cd703eb5bfd9ecd27d1bb97cb7d80c58df8bd63db", "assessment_path": "macula-station-kx"},
+    {"storage_key": "acd7b32f8883f75423abbdab5413a82fc219bd4b4eb95cd943f0a6a2b185b497", "assessment_path": "macula-station-kx"},
+    {"storage_key": "ddbb3f9e8a8c7e5900816091564dd5b3b4df39f79e365842ed9e3063104121ef", "assessment_path": "macula-station-kx"}
   ]
 }
