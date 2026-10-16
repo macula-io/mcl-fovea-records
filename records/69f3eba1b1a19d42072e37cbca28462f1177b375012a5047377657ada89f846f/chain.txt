@@ -1,2 +1,2 @@
-continuous: 255 records, seq 0 to 254, observed 2026-10-05T20:31:44.245Z to 2026-10-16T12:23:19.25Z
-  files 255, accepted 255, refused 0, unchained (v0.4) 0
+continuous: 256 records, seq 0 to 255, observed 2026-10-05T20:31:44.245Z to 2026-10-16T13:23:52.681Z
+  files 256, accepted 256, refused 0, unchained (v0.4) 0
