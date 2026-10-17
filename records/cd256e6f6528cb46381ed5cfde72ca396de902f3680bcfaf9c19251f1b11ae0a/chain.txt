@@ -1,3 +1,3 @@
-not continuous: 404 records, seq 0 to 405, observed 2026-09-30T08:55:12.214Z to 2026-10-17T04:28:30.606Z
-  files 405, accepted 405, refused 0, unchained (v0.4) 1
+not continuous: 405 records, seq 0 to 406, observed 2026-09-30T08:55:12.214Z to 2026-10-17T05:03:57.843Z
+  files 406, accepted 406, refused 0, unchained (v0.4) 1
   C1 gap: seq 2 to 3
