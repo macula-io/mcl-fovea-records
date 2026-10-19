@@ -1332,3 +1332,4 @@
 2026-10-19T17:22:24Z 1792430544392 f1d017bfc408c3d8 seen
 2026-10-19T17:37:23Z 1792431443362 f1d017bfc408c3d8 seen
 2026-10-19T17:52:57Z 1792432377837 99e0ccc2ff3056a0 seq 331 created 2026-10-19T17:40:14Z: kept
+2026-10-19T18:07:17Z 1792433237231 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
