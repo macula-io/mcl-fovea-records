@@ -1300,3 +1300,4 @@
 2026-10-19T17:53:12Z 1792432392701 784cf22e44e97b95 seq 324 created 2026-10-19T17:40:13Z: kept
 2026-10-19T18:07:17Z 1792433237231 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
 2026-10-19T18:22:19Z 1792434139108 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: stationlink: read CHALLENGE: Application error 0x0 (remote): closed; station-fr-paris.macula.io: handshake: unsupported frame version
+2026-10-19T18:37:15Z 1792435035952 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
