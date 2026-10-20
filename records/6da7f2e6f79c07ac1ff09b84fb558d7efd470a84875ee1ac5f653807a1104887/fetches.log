@@ -1403,3 +1403,4 @@
 2026-10-20T19:37:11Z 1792525031894 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
 2026-10-20T19:52:24Z 1792525944869 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: transport: dial station-fr-paris.macula.io:4433: timeout: handshake did not complete in time
 2026-10-20T20:07:14Z 1792526834651 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
+2026-10-20T20:22:08Z 1792527728149 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
