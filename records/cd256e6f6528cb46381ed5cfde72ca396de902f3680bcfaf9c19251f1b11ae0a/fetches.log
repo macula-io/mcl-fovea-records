@@ -1969,3 +1969,4 @@
 2026-10-21T00:07:14Z 1792541234164 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
 2026-10-21T00:22:33Z 1792542153925 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
 2026-10-21T00:37:31Z 1792543051279 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: handshake: unsupported frame version
+2026-10-21T00:52:36Z 1792543956186 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: handshake: unsupported frame version; station-fr-paris.macula.io: stationlink: read CHALLENGE: Application error 0x0 (remote): closed
