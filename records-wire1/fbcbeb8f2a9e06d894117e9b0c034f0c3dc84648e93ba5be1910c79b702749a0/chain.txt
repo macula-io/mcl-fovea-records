@@ -1,2 +1,2 @@
-continuous: 1 records, seq 399 to 399, observed 2026-10-22T21:07:58.835Z to 2026-10-22T21:07:58.835Z
-  files 1, accepted 1, refused 0, unchained (v0.4) 0
+continuous: 2 records, seq 399 to 400, observed 2026-10-22T21:07:58.835Z to 2026-10-22T22:08:29.349Z
+  files 2, accepted 2, refused 0, unchained (v0.4) 0
