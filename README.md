@@ -8,11 +8,11 @@ A public archive of the signed observations that [mcl-fovea](https://github.com/
 
 | Path | What |
 | --- | --- |
-| `records-wire1/<slot>/` | **The current era**: records signed on wire 1.0, from the 19 October 2026 flag day, kept and verified with `fovea` v0.5.0. Laid out exactly as `records/<slot>/` below. |
+| `records-wire1/<slot>/` | **The current era**: records signed on wire 1.0, from the 19 October 2026 flag day, kept and verified with `fovea` v0.5.0. Laid out exactly as `records/<slot>/` below; `<era>` in the rows that follow is either directory. |
 | `records/<slot>/` | **The frozen era before wire 1.0**, verified with `fovea` v0.4.0; the keeper no longer writes here. One directory per slot, named by its DHT storage key (the observer's signer key and the claim's subject). `NNNNNNNN-<hash>.hex`: a chained record, by seq; `unchained-<created_at>-<hash>.hex`: a spec v0.4 record, in no chain. Each file is the record's wire bytes in hex, exactly as the store returned them. |
-| `records/<slot>/fetches.log` | Every fetch: when the keeper looked (UTC and milliseconds), and what it found (`seen`, `kept`, `PUBLISHED LATE`, `REFUSED`, or why it could not look). This is the keeper's evidence of when each record was first there. |
-| `records/<slot>/chain.txt` | The latest `fovea verify --chain` verdict over the slot's records. |
-| `records/<slot>/refused/`, `records/<slot>/other/` | Records `fovea verify` refused, and objects of another type found in the slot (a tombstone), kept apart from the chain. |
+| `<era>/<slot>/fetches.log` | Every fetch: when the keeper looked (UTC and milliseconds), and what it found (`seen`, `kept`, `PUBLISHED LATE`, `REFUSED`, or why it could not look). This is the keeper's evidence of when each record was first there. |
+| `<era>/<slot>/chain.txt` | The latest `fovea verify --chain` verdict over the slot's records. |
+| `<era>/<slot>/refused/`, `<era>/<slot>/other/` | Records `fovea verify` refused, and objects of another type found in the slot (a tombstone), kept apart from the chain. |
 | `endorsements/<observer node id>/` | Every realm member endorsement of the observer the keeper has seen; a record is checked against the one that covered it. |
 | `keeper.json` | The keeping policy: the realm, profile and realm key file, the stations the keeper asks, and the slots it keeps with the assessment each is verified against. [The keeper](https://github.com/macula-io/mcl-fovea-keeper) reads it from here on every run, and the `fovea verify` flags for any slot come from it. Changed only by a reviewed commit. |
 | `realm/io.macula.pub.hex` | The io.macula realm's public key, the trust anchor, as published at `https://realm.macula.io/.well-known/macula-realm.json` (SHA-256 of the hex text: `99e4f08c1aa30405c1eb1e0e81649b2686f3964fae8ffe827f8107bc7777b78d`). |
@@ -43,7 +43,7 @@ A record is judged by the `fovea` that reads its wire format, and no `fovea` rea
 | `ddbb3f9e8a8c7e59…` | 331 | 332 |
 | `fbcbeb8f2a9e06d8…` | 324 | 325 |
 
-The first record in each `records-wire1/<slot>/` chain therefore names a predecessor that is not kept here, and `fovea verify --chain` reports that, as it should.
+`fovea verify --chain` does not see this gap: it starts each `records-wire1/<slot>/` chain at the first record held, so a new-era chain reads `continuous` from its first seq. That verdict covers seq N to M of the new era only; the gap before N is named here, in this README, not by fovea.
 
 ## Check it yourself
 
