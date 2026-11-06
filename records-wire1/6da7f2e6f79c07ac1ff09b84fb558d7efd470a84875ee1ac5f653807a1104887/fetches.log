@@ -1402,3 +1402,4 @@
 2026-11-06T14:22:20Z 1793974940291 3b48708363dbf6a7 seen
 2026-11-06T14:37:15Z 1793975835291 3b48708363dbf6a7 seen
 2026-11-06T14:52:11Z 1793976731622 3b48708363dbf6a7 seen
+2026-11-06T15:07:07Z 1793977627855 - keeper could not reach a station: no station answered: station-nl-ams.macula.io: stationlink: read CHALLENGE: Application error 0x0 (remote): closed; station-fr-paris.macula.io: stationlink: read CHALLENGE: Application error 0x0 (remote): closed
