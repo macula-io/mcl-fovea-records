@@ -1,3 +1,3 @@
-not continuous: 656 records, seq 406 to 1062, observed 2026-10-22T21:08:05.083Z to 2026-11-19T13:49:26.238Z
-  files 656, accepted 656, refused 0, unchained (v0.4) 0
+not continuous: 657 records, seq 406 to 1063, observed 2026-10-22T21:08:05.083Z to 2026-11-19T14:50:28.099Z
+  files 657, accepted 657, refused 0, unchained (v0.4) 0
   C1 gap: seq 703
